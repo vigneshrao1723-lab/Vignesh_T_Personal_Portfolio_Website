@@ -123,7 +123,7 @@ export function RagArtifact() {
       const radiusAtY = Math.sqrt(Math.max(0, 1 - y * y));
       const theta = goldenAngle * i;
       documents.push(
-        new Vector3(Math.cos(theta) * radiusAtY, y, Math.sin(theta) * radiusAtY).multiplyScalar(1.7),
+        new Vector3(Math.cos(theta) * radiusAtY, y, Math.sin(theta) * radiusAtY).multiplyScalar(1.3),
       );
     }
     // Only a few nodes are "retrieved" — connected to the query.
@@ -170,7 +170,7 @@ export function CommerceArtifact() {
   const { groupRef, hoverHandlers } = useArtifactMotion();
 
   const { positions, edges } = useMemo(() => {
-    const positions = [-1.8, -0.6, 0.6, 1.8].map((x) => new Vector3(x, 0, 0));
+    const positions = [-1.3, -0.43, 0.43, 1.3].map((x) => new Vector3(x, 0, 0));
     const edges = [0, 1, 2].map((i) => edgeTransform(positions[i], positions[i + 1]));
     return { positions, edges };
   }, []);

@@ -104,6 +104,40 @@ including this file.
 
 Inspect the actual code.
 
+## Project 3D artifacts were being clipped — fixed (2026-10-05, sixth pass)
+
+The brief repeated earlier ones (and said the project 3D "interferes with the
+text"). Everything it listed was already done, so this was a verification pass —
+and looking at actual screenshots (not just layout numbers) found two REAL bugs:
+- **RAG artifact (all widths ≥ 768, clearly at 1440):** the node cluster
+  (Fibonacci-sphere radius 1.7 + node radius) was taller than the camera's
+  visible height (fov 32 at z = 6 → half-height ≈ 1.72), so top/bottom nodes were
+  cut off by the canvas. Radius is now 1.3 (`projectArtifacts.tsx`).
+- **Project Store artifact (≤ 820 px):** the four-stage row spanned x = ±1.8 and
+  the narrow panels (333×260 at 375, 352×320 at 768) only see about ±2.2 / ±1.9
+  horizontally, so the catalog box and order ring touched/crossed the edges.
+  Stage x-positions are now [−1.3, −0.43, 0.43, 1.3] (neighbours still clear each
+  other: centre gaps 0.87 vs radius sums ≤ 0.78).
+- **Why earlier QA missed it:** the checks measured layout boxes (panel vs text
+  overlap, canvas count) — never whether the scene fit inside its own canvas.
+  **New check, keep using it:** screenshot each project canvas and test whether any
+  non-background pixel lies within 2–5 px of the border (ignoring 20 px corner
+  squares for the rounded card clip, and the outer 2 px, which is the card border /
+  sub-pixel seam). Result after the fix: 0 edge-touching cases for all 3 cards at
+  375/768/820/1440, at rest AND hovered at 1440 (the artifacts rotate on hover).
+- Cards re-inspected visually at 1440 and 375: the 3D panel is a 260–320 px
+  inset beside/above the text, never over it (panel-vs-text overlap false for all
+  cards at all four widths); the artifacts now have margin around them.
+- Full regression on the production build: typecheck/lint/build clean; at
+  375/768/820/1440 no overflow, 0 console/page errors, 0 failed requests, 0 three
+  chunk requests and 0 canvases at load, canvases mount on scroll, hero portrait
+  loaded and clear of nav/heading/buttons/marquee; form validation + mailto
+  composition, "More detail" by keyboard, Projects/Skills/Contact anchors at 112 px
+  under an 88 px nav, focus outlines ≥ 2 px with no hidden stops, reduced motion
+  static, 0 hero canvases. State otherwise unchanged: no `.glb` exists anywhere
+  (repo or user folders), hero keeps the photo tilt, git clean at the start.
+  Not tested: real mail client, real phones, Firefox/Safari.
+
 ## 3D head slot — drop-in `head.glb` (2026-10-05, fifth pass)
 
 The brief again asked for the cursor-following 3D face "if a .glb exists, else
