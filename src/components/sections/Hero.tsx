@@ -1,6 +1,5 @@
-import { Button, Container, CursorPortrait, Heading, Marquee, SectionLabel, Text } from "../ui";
+import { Button, Container, Heading, Marquee, PortraitSlot, SectionLabel, Text } from "../ui";
 import { useHeroEntrance } from "../../animation/useHeroEntrance";
-import { PORTRAIT } from "../../content/profile";
 
 const ITEM_COUNT = 6;
 
@@ -34,13 +33,13 @@ const SKILLS = [
  * Hero (spec §8 Phase 3). Left: name, intro, contact CTAs. Right: the portrait.
  * The large 3D lattice that used to sit behind this text was removed on
  * 2026-10-05 — it overpowered the page and crossed over the nav and the copy.
- * There is no canvas or WebGL here, so nothing can cover the text.
+ * With no head model there is no canvas or WebGL here, so nothing can cover the text.
  *
- * The portrait slot is the future home of the cursor-following 3D face. Today
- * it holds the flat photo with `CursorPortrait`'s small, eased tilt toward the
- * cursor (honest 2D tilt, not a fake 3D head). To upgrade: replace
- * `CursorPortrait` in this one place with the 3D component; the grid column,
- * its reserved aspect box (no layout shift) and the reveal ref stay as they are.
+ * The portrait slot (`PortraitSlot`) shows the flat photo with `CursorPortrait`'s
+ * small, eased tilt toward the cursor (an honest 2D tilt, not a fake 3D head).
+ * If a model exists at `src/assets/head.glb` it becomes a lazily-loaded 3D head
+ * that turns toward the cursor instead (see `content/profile.ts`). The grid
+ * column and the fixed aspect box are the same either way: no layout shift.
  */
 export function Hero() {
   const getItemRef = useHeroEntrance(ITEM_COUNT);
@@ -92,7 +91,7 @@ export function Hero() {
             ref={getItemRef(5)}
             className="mx-auto w-full max-w-[16rem] md:max-w-[20rem] md:justify-self-end lg:max-w-sm"
           >
-            <CursorPortrait {...PORTRAIT} eager />
+            <PortraitSlot />
           </div>
         </div>
       </Container>

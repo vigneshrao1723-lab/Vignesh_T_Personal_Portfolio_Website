@@ -9,3 +9,4 @@ export { Link } from "./Link";
 export { Divider } from "./Divider";
 export { Marquee } from "./Marquee";
 export { CursorPortrait } from "./CursorPortrait";
+export { PortraitSlot } from "./PortraitSlot";

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAppStore } from "../../store/useAppStore";
 import { useHasHover } from "../../hooks/useHasHover";
+import { cursorOffset } from "../../lib/cursorOffset";
 
 interface CursorPortraitProps {
   src: string;
@@ -23,8 +24,6 @@ const MAX_SHIFT_PX = 6;
 // and never snaps.
 const SMOOTHING = 0.08;
 const SETTLE_EPSILON = 0.001;
-
-const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 /**
  * The supplied portrait is a 2D photograph, so this does NOT pretend to be a
@@ -94,12 +93,9 @@ export function CursorPortrait({
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      const rect = frame.getBoundingClientRect();
-      // Aim at roughly eye level (upper part of the frame), not its center.
-      const originX = rect.left + rect.width / 2;
-      const originY = rect.top + rect.height * 0.38;
-      target.x = clamp((event.clientX - originX) / (window.innerWidth / 2), -1, 1);
-      target.y = clamp((event.clientY - originY) / (window.innerHeight / 2), -1, 1);
+      const offset = cursorOffset(frame.getBoundingClientRect(), event.clientX, event.clientY);
+      target.x = offset.x;
+      target.y = offset.y;
       kick();
     };
 
