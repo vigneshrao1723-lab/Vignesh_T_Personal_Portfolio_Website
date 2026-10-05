@@ -101,6 +101,22 @@ including this file.
 
 Inspect the actual code.
 
+## Copy pass — Projects intro (2026-10-05, fourth pass)
+
+The brief repeated the earlier ones; everything it listed as work was already
+done and committed (verified by inspection: three cards, NoSQL, mailto form,
+no hero 3D box, lazy project 3D). The only real gap was the Projects intro. The
+heading "Three projects I've worked on." (which a brief called artificial) is now
+**"Things I've built, and am still building."** with a quiet line beneath it,
+"Work from exploring security, AI, and software engineering." ("still building"
+keeps Project Store honest as unfinished). A longer one-line version was tried and
+rejected — it wrapped to 4 lines at 1440 and swamped the section. Checked on the
+dev server at 1440 (2 lines) and 375 (3 lines): no overflow, 0 console errors;
+typecheck/lint/build clean. Experience copy re-read: first person, résumé-sourced,
+no invented metrics — unchanged. 3D face status unchanged (no asset; hero keeps
+the flat-photo tilt; spec of the needed `.glb` is in the Finalisation section).
+The ~918 kB chunk is already lazy (mounted on scroll), see Finalisation pass.
+
 ## Completion pass — git checkpoint + independent fact check (2026-10-05, third pass)
 
 The brief repeated the previous ones; nothing was rebuilt. New this pass:

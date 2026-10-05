@@ -147,8 +147,11 @@ export function Projects() {
         <div ref={getItemRef(0)}>
           <SectionLabel index="03">Projects</SectionLabel>
           <Heading id="projects-heading" as="h2" size="display-lg" className="mt-6 max-w-2xl">
-            Three projects I&rsquo;ve worked on.
+            Things I&rsquo;ve built, and am still building.
           </Heading>
+          <Text as="p" tone="secondary" size="body-lg" className="mt-4 max-w-2xl">
+            Work from exploring security, AI, and software engineering.
+          </Text>
         </div>
 
         <div className="mt-12 space-y-10">
