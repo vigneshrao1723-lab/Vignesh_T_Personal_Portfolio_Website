@@ -41,6 +41,9 @@ Current project:
 LATTICE
 
 Current development phase:
+3D head slot (2026-10-05, fifth pass): a tested drop-in path for a real `head.glb`
+now exists (`PortraitSlot`/`HeadScene`). No model exists yet, so the Hero still shows
+the flat photo with its tilt. See "3D head slot" below.
 Finalisation pass (2026-10-05, second): the portrait now lives in the Hero
 (flat-photo tilt, not a 3D head), project 3D is lazy-mounted on scroll (nothing
 3D on first paint), About is trimmed to text + education card. See "Finalisation
