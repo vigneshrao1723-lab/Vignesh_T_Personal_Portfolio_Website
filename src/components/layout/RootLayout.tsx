@@ -1,11 +1,42 @@
+import { useEffect } from "react";
 import type { ReactNode } from "react";
 import { Nav } from "./Nav";
+import {
+  getStoredThemePreference,
+  THEME_STORAGE_KEY,
+  useAppStore,
+} from "../../store/useAppStore";
 
 interface RootLayoutProps {
   children: ReactNode;
 }
 
 export function RootLayout({ children }: RootLayoutProps) {
+  const setTheme = useAppStore((state) => state.setTheme);
+
+  useEffect(() => {
+    const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+    const syncSystemTheme = () => {
+      if (getStoredThemePreference() === null) {
+        setTheme(systemPreference.matches ? "dark" : "light", false);
+      }
+    };
+    const syncStoredTheme = (event: StorageEvent) => {
+      if (event.key !== THEME_STORAGE_KEY && event.key !== null) return;
+      setTheme(
+        getStoredThemePreference() ?? (systemPreference.matches ? "dark" : "light"),
+        false,
+      );
+    };
+
+    systemPreference.addEventListener("change", syncSystemTheme);
+    window.addEventListener("storage", syncStoredTheme);
+    return () => {
+      systemPreference.removeEventListener("change", syncSystemTheme);
+      window.removeEventListener("storage", syncStoredTheme);
+    };
+  }, [setTheme]);
+
   return (
     <>
       {/* Phase 9 (Accessibility): the floating nav has 5 links + a CTA

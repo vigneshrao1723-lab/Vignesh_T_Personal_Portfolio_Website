@@ -9,7 +9,7 @@ export type ButtonProps = { variant?: ButtonVariant; children: ReactNode } & (
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-accent text-white shadow-card hover:shadow-elevated hover:-translate-y-0.5 active:translate-y-0 active:bg-accent-strong active:shadow-card",
+    "bg-accent text-[var(--color-accent-contrast)] shadow-card hover:shadow-elevated hover:-translate-y-0.5 active:translate-y-0 active:bg-accent-strong active:shadow-card",
   secondary:
     "bg-transparent text-ink border border-border hover:border-accent hover:text-accent active:bg-accent-soft active:border-accent-strong active:text-accent-strong",
   subtle:
