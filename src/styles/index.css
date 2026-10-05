@@ -1,0 +1,201 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@import "@fontsource-variable/fraunces/wght.css";
+@import "@fontsource-variable/ibm-plex-sans/wght.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+/* Visible focus states — CLAUDE.md accessibility requirement. */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Marquee (src/components/ui/Marquee.tsx) — respects the
+   prefers-reduced-motion rule above automatically via animation-duration. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 24s linear infinite;
+}
+
+@keyframes id-card-arrive {
+  0% {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  68% {
+    opacity: 1;
+    transform: translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+.animate-id-card-arrive {
+  animation: id-card-arrive 900ms var(--ease-signal) both;
+}
+
+/* Opt-in primary section-heading motif; card and form subheadings stay quiet. */
+.section-heading {
+  width: fit-content;
+}
+
+.section-heading::after {
+  content: "";
+  display: block;
+  width: 3.25rem;
+  height: 2px;
+  margin-top: 0.7rem;
+  background: var(--color-accent);
+}
+
+.skill-group-heading {
+  display: inline-block;
+  padding-bottom: 0.55rem;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+@keyframes project-dialog-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes project-dialog-panel-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.project-dialog-backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow: hidden;
+  background: rgb(20 23 26 / 0.34);
+  animation: project-dialog-backdrop-in 180ms ease-out both;
+}
+
+.project-dialog-panel {
+  width: min(100%, 60rem);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: 0 20px 64px rgb(20 23 26 / 0.24);
+  animation: project-dialog-panel-in 220ms var(--ease-signal) both;
+}
+
+.project-dialog-backdrop.is-closing {
+  opacity: 0;
+  transition: opacity 180ms ease-in;
+}
+
+.project-dialog-backdrop.is-closing .project-dialog-panel {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 160ms ease-in, transform 160ms ease-in;
+}
+
+.project-flow-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-canvas);
+}
+
+.project-flow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  gap: 0.35rem;
+}
+
+.project-flow-node {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-ink-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.project-flow-arrow {
+  color: var(--color-accent);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+@media (min-width: 48rem) {
+  .project-flow-diagram {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .project-flow-step {
+    flex: 1 1 0;
+    flex-direction: row;
+  }
+
+  .project-flow-arrow {
+    flex: none;
+    transform: rotate(-90deg);
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
