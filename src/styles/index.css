@@ -120,6 +120,32 @@ body {
   animation: project-dialog-panel-in 220ms var(--ease-signal) both;
 }
 
+.mobile-nav-backdrop {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(20 23 26 / 0.34);
+  animation: project-dialog-backdrop-in 180ms ease-out both;
+}
+
+.mobile-nav-panel {
+  width: min(100%, 28rem);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: 0 20px 64px rgb(20 23 26 / 0.24);
+  animation: project-dialog-panel-in 220ms var(--ease-signal) both;
+}
+
 .project-dialog-backdrop.is-closing {
   opacity: 0;
   transition: opacity 180ms ease-in;
