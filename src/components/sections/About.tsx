@@ -32,9 +32,8 @@ export function About() {
             {/* About stays short and is not a project list — the projects have
                 their own section. No numbers here on purpose. */}
             <Text as="p" tone="secondary" size="body-lg">
-              I&rsquo;m Vignesh, a final-year Computer Science Engineering student interested in
-              networking, applied cryptography, and AI engineering. I like to understand something
-              properly and then build and test it myself.
+              I&rsquo;m Vignesh, focused on networking, applied cryptography, and AI engineering.
+              I like to understand something properly and then build and test it myself.
             </Text>
             {/* NEEDS VIGNESH INPUT (no metric exists in the resume or any
                 repo, so none is stated): number of systems/features built or
