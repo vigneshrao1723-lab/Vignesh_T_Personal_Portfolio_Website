@@ -101,6 +101,34 @@ including this file.
 
 Inspect the actual code.
 
+## Completion pass — git checkpoint + independent fact check (2026-10-05, third pass)
+
+The brief repeated the previous ones; nothing was rebuilt. New this pass:
+- **Git:** first commit `7b7ab79` ("Portfolio checkpoint…") on `master`, working
+  tree clean afterwards. No git identity is configured on this machine, so it was
+  committed with a one-off `-c user.name="Vignesh T" -c user.email=<résumé email>`
+  (nothing written to git config) and WITHOUT any AI trailer (Vignesh does not want
+  AI attribution in public material; git history is public once pushed). `CLAUDE.md`
+  and the spec are tracked — remove or ignore them before making the repo public
+  if the internal notes should stay private. The branch is `master` (default
+  elsewhere is `main`).
+- **Kyber parameter set re-verified in the code** (not from the audit):
+  `crypto/kyber.py` imports only `ML_KEM_768` (public key 1,184 B constant); no
+  Kyber-1024 / ML_KEM_1024 anywhere in the `.py` files. Benchmark JSON re-read:
+  200 iterations / 20 warm-up, RSA keygen 33.21 ms, ML-KEM keygen 2.43 ms.
+  → site says ML-KEM-768 (the résumé's "Kyber-1024" is the thing to fix).
+- **Project B stack re-verified from the public repo's own manifests** (GitHub raw
+  files, `main`): `backend/pyproject.toml` has FastAPI, pgvector, psycopg,
+  SQLAlchemy, Alembic; `frontend/package.json` has Next; `infra/compose/docker-
+  compose.yml` runs PostgreSQL with pgvector. **No** FAISS, LangChain, Flask,
+  Streamlit or sentence-transformers in any manifest. → project cards keep
+  FastAPI/PostgreSQL/pgvector/Next.js; FAISS/LangChain stay ONLY in Skills and the
+  hero marquee as résumé skills (Vignesh listed them as skills to keep).
+- Live dev server (5173) smoke test at 375/820/1440/1920: no overflow, 0 console
+  errors, 0 canvases at load, 7 sections in order, three project names, 1 h1, form
+  present, "Contact me." heading, 0 broken above-the-fold images; hero checked
+  visually at 1920. typecheck/lint clean before the commit.
+
 ## Finalisation pass — hero portrait, lazy 3D, copy — decisions made (2026-10-05, second pass)
 
 Supersedes the cleanup pass where they differ ("hero right side is empty",
