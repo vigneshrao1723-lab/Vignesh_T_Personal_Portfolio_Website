@@ -74,7 +74,10 @@ export interface Project {
 }
 
 const NBSP = " ";
-const PROJECT_SOURCE_URL = "https://github.com/vigneshrao1723-lab/Project-store";
+const QUANTUM_SOURCE_URL = "https://github.com/vigneshrao1723-lab/Quantum-Resistant-Secure-Communication-System";
+const RAG_SOURCE_URL = "https://github.com/vigneshrao1723-lab/advanced-rag-knowledge-assistant";
+const PROJECT_STORE_SOURCE_URL = "https://github.com/vigneshrao1723-lab/Project-store";
+const PORTFOLIO_SOURCE_URL = "https://github.com/vigneshrao1723-lab/Vignesh_T_Personal_Portfolio_Website";
 
 // Evidence behind every number below is traced in CLAUDE.md. Summary:
 //  • Project A: the user's project audit. Independently reproduced on disk:
@@ -120,7 +123,7 @@ export const PROJECTS: Project[] = [
     links: [
       {
         label: "View Source",
-        href: PROJECT_SOURCE_URL,
+        href: QUANTUM_SOURCE_URL,
       },
     ],
     visual: {
@@ -181,7 +184,7 @@ export const PROJECTS: Project[] = [
     links: [
       {
         label: "View Source",
-        href: PROJECT_SOURCE_URL,
+        href: RAG_SOURCE_URL,
       },
     ],
     visual: {
@@ -225,7 +228,7 @@ export const PROJECTS: Project[] = [
     tags: ["REST APIs", "Transactions", "Docker", "CI/CD"],
     description:
       "A personal project store designed around browsing, a cart, and sandbox checkout.",
-    links: [{ label: "View Source", href: PROJECT_SOURCE_URL }],
+    links: [{ label: "View Source", href: PROJECT_STORE_SOURCE_URL }],
     highlight: {
       label: "What it will do",
       text: "Browse projects by category, add them to a cart, and check out through a sandbox payment, with a simple admin view for managing items and orders.",
@@ -277,7 +280,7 @@ export const PROJECTS: Project[] = [
     tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "GSAP"],
     description:
       "A responsive engineering portfolio that combines interactive UI, technical storytelling, and recruiter-focused project presentation.",
-    links: [{ label: "View Source", href: PROJECT_SOURCE_URL }],
+    links: [{ label: "View Source", href: PORTFOLIO_SOURCE_URL }],
     visual: {
       src: personalPortfolio,
       alt: "Briefcase icon for the personal portfolio",
