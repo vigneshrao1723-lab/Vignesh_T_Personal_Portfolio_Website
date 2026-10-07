@@ -8,10 +8,12 @@ import { Achievements } from "./components/sections/Achievements";
 import { Contact } from "./components/sections/Contact";
 import { useReducedMotionPreference } from "./hooks/useReducedMotionPreference";
 import { useSmoothScroll } from "./animation/useSmoothScroll";
+import { useScrollProgress } from "./animation/useScrollProgress";
 
 function App() {
   useReducedMotionPreference();
   useSmoothScroll();
+  useScrollProgress();
 
   return (
     <RootLayout>

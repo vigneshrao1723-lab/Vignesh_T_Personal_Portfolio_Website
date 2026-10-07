@@ -1,4 +1,4 @@
-import { Container, Heading, Section, SectionLabel, Text } from "../ui";
+import { Container, Heading, Section, Text } from "../ui";
 import { useScrollReveal } from "../../animation/useScrollReveal";
 
 interface Certification {
@@ -63,14 +63,13 @@ export function Achievements() {
     <Section id="achievements" aria-labelledby="achievements-heading">
       <Container ref={containerRef}>
         <div ref={getItemRef(0)}>
-          <SectionLabel index="05">Achievements</SectionLabel>
           <Heading
             id="achievements-heading"
             as="h2"
             size="display-lg"
-            className="mt-6 max-w-2xl"
+            className="section-heading max-w-2xl"
           >
-            Courses and hackathons.
+            Achievements
           </Heading>
         </div>
 

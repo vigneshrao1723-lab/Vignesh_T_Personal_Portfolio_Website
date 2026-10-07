@@ -1,5 +1,5 @@
 /**
- * LATTICE design tokens — single source of truth.
+ * Portfolio design tokens — single source of truth.
  *
  * IMPORTANT architecture note, found and fixed while wiring the shared
  * DOM/Three.js token bridge (spec §9): a plain `@theme { --color-x: #fff }`
@@ -28,6 +28,8 @@
  */
 
 :root {
+  color-scheme: light;
+
   /* ---- Color: canonical values, always present regardless of Tailwind
      utility usage — see the architecture note above. ---- */
 
@@ -69,6 +71,9 @@
      error. */
   --color-accent-strong: #0a5a6b;
   --color-focus: var(--color-accent); /* 4.9:1+ against canvas and surface, clears the 3:1 non-text minimum */
+  --color-accent-contrast: #ffffff;
+  --color-backdrop: rgb(20 23 26 / 0.34);
+  --shadow-dialog: 0 20px 64px rgb(20 23 26 / 0.24);
 
   /* ---- Motion: no Tailwind theme namespace exists for these (verified
      against tailwindcss/theme.css — only --default-transition-duration
@@ -168,9 +173,32 @@
 
   /* ---- Easing ---- */
   /* --ease-in / --ease-out / --ease-in-out already exist in Tailwind's
-     default theme; --ease-signal is LATTICE's own reveal/entrance curve
+     default theme; --ease-signal is the portfolio's own reveal/entrance curve
      (cinematic, decelerating) referenced by name so GSAP timelines can use
      the documented equivalent in src/lib/designTokens.ts instead of a
      hand-copied bezier. */
   --ease-signal: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-canvas: #141a1d;
+  --color-surface: #1c252a;
+  --color-surface-elevated: #232e33;
+  --color-ink: #edf2f3;
+  --color-ink-secondary: #c2cdd1;
+  --color-ink-muted: #a8b6bb;
+  --color-border: #3b4a50;
+  --color-border-strong: #70838a;
+  --color-accent: #59bdc8;
+  --color-accent-soft: #233b40;
+  --color-accent-strong: #8bd7df;
+  --color-focus: #59bdc8;
+  --color-accent-contrast: #10282b;
+  --color-backdrop: rgb(2 8 10 / 0.68);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.2), 0 8px 24px -8px rgb(0 0 0 / 0.28);
+  --shadow-elevated: 0 4px 8px rgb(0 0 0 / 0.24), 0 20px 48px -12px rgb(0 0 0 / 0.42);
+  --shadow-nav: 0 1px 1px rgb(0 0 0 / 0.2), 0 12px 32px -12px rgb(0 0 0 / 0.48);
+  --shadow-dialog: 0 20px 64px rgb(0 0 0 / 0.56);
 }

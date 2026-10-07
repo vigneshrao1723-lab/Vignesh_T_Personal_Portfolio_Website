@@ -1,4 +1,4 @@
-import { Container, Heading, Section, SectionLabel, Text } from "../ui";
+import { Container, Heading, Section, Text } from "../ui";
 import { useScrollReveal } from "../../animation/useScrollReveal";
 
 interface SkillGroup {
@@ -63,19 +63,19 @@ export function Skills() {
     <Section id="skills" aria-labelledby="skills-heading">
       <Container ref={containerRef}>
         <div ref={getItemRef(0)}>
-          <SectionLabel index="04">Skills</SectionLabel>
-          <Heading id="skills-heading" as="h2" size="display-lg" className="mt-6 max-w-2xl">
-            What I work with.
+          <Heading id="skills-heading" as="h2" size="display-lg" className="section-heading max-w-2xl">
+            Skills
           </Heading>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 rounded-card border border-border bg-surface p-6 shadow-card sm:p-8 md:p-10">
+          <div className="grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {SKILL_GROUPS.map((group, index) => (
             <div key={group.label} ref={getItemRef(index + 1)}>
               {/* Same reasoning as Experience's cluster labels: Text has no
                   "accent" tone, so a plain element with fully explicit
                   classes avoids layering an override on its default tone. */}
-              <p className="font-mono text-caption uppercase tracking-[0.15em] text-accent">
+              <p className="skill-group-heading font-mono text-caption uppercase tracking-[0.15em] text-accent">
                 {group.label}
               </p>
               <Text as="p" tone="secondary" size="body-sm" className="mt-3">
@@ -83,6 +83,7 @@ export function Skills() {
               </Text>
             </div>
           ))}
+          </div>
         </div>
       </Container>
     </Section>

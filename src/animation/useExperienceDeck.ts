@@ -4,69 +4,85 @@ import { gsapEase } from "../lib/designTokens";
 import { useAppStore } from "../store/useAppStore";
 
 /**
- * Experience's card reveal (spec §5: "pinned/sticky deck interaction for
- * its timeline cards").
- *
- * A `ScrollTrigger pin:true + scrub` version was built and tested first.
- * Under automated repeated wheel/keyboard-scroll testing, `page.screenshot()`
- * started hanging once the page neared its scroll end. Chased this down
- * before concluding anything: `scrollY` "sticking" turned out to be the
- * page legitimately reaching `document.documentElement.scrollHeight -
- * clientHeight` (confirmed by reading `scrollHeight` directly), not a
- * frozen/broken scroll — the earlier "stuck scroll" read on that data was
- * wrong. The screenshot hang itself, though, showed up specifically under
- * rapid synthetic scroll events with the pin active, and did not reproduce
- * with the same gentle, proven verification method (`scrollIntoViewIfNeeded`
- * + a settle wait) used successfully everywhere else in this project. That
- * left real ambiguity about whether the pin was actually implicated or the
- * stress-test method itself was the problem — not enough confidence either
- * way to ship a pinned interaction. Given the explicit instruction to fall
- * back to a simpler presentation when pinning gets "awkward," this uses the
- * same non-pinned stagger-on-scroll pattern `useScrollReveal` uses for
- * About instead (kept as its own hook, not merged into it, since a card
- * animation isn't quite the same shape as a list of arbitrary DOM items) —
- * reuses the single `gsap`/`ScrollTrigger` instance from `./gsap`, no
- * second ticker.
+ * Experience has one reveal hierarchy and a separate, nested depth layer.
+ * Keeping the reveal and scroll-linked transforms on different elements
+ * avoids competing writes to the same transform property.
  */
-export function useExperienceDeck(cardCount: number) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+export function useExperienceDeck(columnCount: number) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const cardMotionRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const columnMotionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const columnRefs = useRef<(HTMLDivElement | null)[]>([]);
   const reducedMotion = useAppStore((state) => state.reducedMotion);
 
-  const getCardRef = useCallback(
-    (index: number) => (el: HTMLElement | null) => {
-      cardRefs.current[index] = el;
-    },
-    [],
-  );
+  const getColumnMotionRef = useCallback((index: number) => (element: HTMLDivElement | null) => {
+    columnMotionRefs.current[index] = element;
+  }, []);
+  const getColumnRef = useCallback((index: number) => (element: HTMLDivElement | null) => {
+    columnRefs.current[index] = element;
+  }, []);
 
   useEffect(() => {
-    const cards = cardRefs.current.slice(0, cardCount).filter(Boolean) as HTMLElement[];
-    if (cards.length === 0) return;
+    const section = sectionRef.current;
+    const heading = headingRef.current;
+    const cardMotion = cardMotionRef.current;
+    const card = cardRef.current;
+    const header = headerRef.current;
+    const columns = columnRefs.current.slice(0, columnCount).filter(Boolean) as HTMLDivElement[];
+    const columnMotion = columnMotionRefs.current.slice(0, columnCount).filter(Boolean) as HTMLDivElement[];
+    if (!section || !heading || !cardMotion || !card || !header) return;
 
     if (reducedMotion) {
-      gsap.set(cards, { opacity: 1, y: 0, scale: 1 });
+      gsap.set([heading, card, header, ...columns, cardMotion, ...columnMotion], {
+        autoAlpha: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+      });
       return;
     }
 
+    const compact = window.matchMedia("(max-width: 767px)").matches;
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cards,
-        { opacity: 0, y: 40, scale: 0.98 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          ease: gsapEase.signal,
-          stagger: 0.12,
-          scrollTrigger: { trigger: containerRef.current, start: "top 80%", once: true },
-        },
-      );
-    });
+      const entrance = gsap.timeline({
+        scrollTrigger: { trigger: section, start: "top 74%", once: true },
+      });
+      entrance
+        .fromTo(heading, { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: gsapEase.signal })
+        .fromTo(card, { autoAlpha: 0, y: compact ? 14 : 18 }, { autoAlpha: 1, y: 0, duration: 0.72, ease: gsapEase.signal }, "-=0.32")
+        .fromTo(header, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: gsapEase.signal }, "-=0.5")
+        .fromTo(columns, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.52, ease: gsapEase.signal, stagger: 0.08 }, "-=0.34");
+
+      gsap.to(cardMotion, {
+        y: compact ? -2 : -6,
+        ease: "none",
+        scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: 0.45 },
+      });
+
+      columnMotion.forEach((column, index) => {
+        const depth = compact ? 0 : (index - 1) * 2;
+        if (depth === 0) return;
+        gsap.to(column, {
+          y: depth,
+          ease: "none",
+          scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: 0.45 },
+        });
+      });
+    }, section);
 
     return () => ctx.revert();
-  }, [reducedMotion, cardCount]);
+  }, [columnCount, reducedMotion]);
 
-  return { containerRef, getCardRef };
+  return {
+    sectionRef,
+    headingRef,
+    cardMotionRef,
+    cardRef,
+    headerRef,
+    getColumnMotionRef,
+    getColumnRef,
+  };
 }

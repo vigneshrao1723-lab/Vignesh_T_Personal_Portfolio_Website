@@ -1,4 +1,4 @@
-import { Container, Heading, Section, SectionLabel, Text } from "../ui";
+import { Container, Heading, Section, Text } from "../ui";
 import { useExperienceDeck } from "../../animation/useExperienceDeck";
 
 interface ExperienceCluster {
@@ -23,31 +23,28 @@ const EXPERIENCE: ExperienceEntry[] = [
     company: "Earthy",
     role: "Founder’s Associate (Growth Engineer)",
     location: "Bengaluru",
-    period: "Oct 2025 – Present",
+    period: "Oct 2025 – Oct 2026",
     // NEEDS VIGNESH INPUT — no outcome metrics exist in the spec/resume, so
     // none are stated. Needed per cluster: (1) how many systems/features I
     // built or improved, which integrations/deployments, and their users;
     // (2) which recurring issues I resolved and how many, how many
     // teams/stakeholders I worked with, time or manual work saved (%);
     // (3) how many projects/features shipped over what period.
-    // Period reads "Present": Vignesh states in his own briefs that the role
-    // is ongoing, while the 2026-09-10 resume said "Sep 2026" (already past).
-    // Revert to "Oct 2025 – Sep 2026" if that turns out to be wrong.
     clusters: [
       {
-        label: "What I built",
+        label: "Built",
         description:
-          "I designed and deployed Earthy’s internal tools and business systems, including the company website, UI/UX workflows, and technical infrastructure.",
+          "Designed and deployed internal tools, business systems, the company website, UI/UX workflows, and technical infrastructure.",
       },
       {
-        label: "Problems I solved",
+        label: "Solved",
         description:
-          "I investigated and fixed technical issues across product and operations systems, wrote up the solutions, and worked with non-technical stakeholders along the way.",
+          "Investigated and fixed product and operations issues, then documented the solutions.",
       },
       {
-        label: "With the founders",
+        label: "Collaborated",
         description:
-          "I took full-cycle product, engineering, and operations tasks from idea through deployment, which contributed to better team efficiency and customer engagement. I worked with the founders on the roadmap and on business development.",
+          "Worked with founders and non-technical stakeholders on delivery, roadmap, and business development.",
       },
     ],
   },
@@ -78,37 +75,35 @@ const EXPERIENCE: ExperienceEntry[] = [
  * card to alternate against, which doesn't exist yet.
  */
 export function Experience() {
-  const { containerRef, getCardRef } = useExperienceDeck(EXPERIENCE.length);
+  const {
+    sectionRef,
+    headingRef,
+    cardMotionRef,
+    cardRef,
+    headerRef,
+    getColumnMotionRef,
+    getColumnRef,
+  } = useExperienceDeck(EXPERIENCE[0].clusters.length);
 
   return (
     <Section id="experience" aria-labelledby="experience-heading">
       <Container>
-        <div className="grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-          <div>
-            {/* heading-lg, not display-lg: in this narrow sticky column
-                (roughly a third of the row) the large display size wraps
-                to 5-6 lines, making the column almost as tall as the card
-                beside it and leaving no real room for sticky to do
-                anything — confirmed by measuring zero height difference
-                between the column and its content before this fix. A
-                narrower column calling for a smaller heading size is a
-                normal editorial-typography call, not a token change. */}
+        <div ref={sectionRef} className="grid grid-cols-1 items-start gap-x-12 gap-y-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.6fr)]">
+          <div ref={headingRef} className="max-w-sm">
             <div className="md:sticky md:top-28">
-              <SectionLabel index="02">Experience</SectionLabel>
-              <Heading id="experience-heading" as="h2" size="heading-lg" className="mt-6">
-                My work at Earthy.
+              <Heading id="experience-heading" as="h2" size="display-lg" className="section-heading">
+                Experience
               </Heading>
+              <Text as="p" tone="secondary" size="body" className="mt-4">
+                Hands-on work across internal systems, product workflows, and technical operations at Earthy.
+              </Text>
             </div>
           </div>
 
-          <div ref={containerRef} className="space-y-8">
-            {EXPERIENCE.map((entry, index) => (
-              <article
-                key={entry.company}
-                ref={getCardRef(index)}
-                className="rounded-card border border-border bg-surface p-8 shadow-card md:p-12"
-              >
-                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+          <div ref={cardMotionRef}>
+            {EXPERIENCE.map((entry) => (
+              <article key={entry.company} ref={cardRef} className="rounded-card border border-border bg-surface p-6 shadow-card sm:p-8">
+                <div ref={headerRef} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
                   <div>
                     <Heading as="h3" size="heading-md">
                       {entry.company}
@@ -127,20 +122,17 @@ export function Experience() {
                   </div>
                 </div>
 
-                <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-                  {entry.clusters.map((cluster) => (
-                    <div key={cluster.label}>
-                      {/* Text has no "accent" tone option, and layering an
-                          override className on top of its default tone risks
-                          two same-property classes with ambiguous precedence
-                          — a plain element with fully explicit classes avoids
-                          that instead of fighting the primitive's API. */}
-                      <p className="font-mono text-caption uppercase tracking-[0.15em] text-accent">
-                        {cluster.label}
-                      </p>
-                      <Text as="p" tone="secondary" size="body-sm" className="mt-2">
-                        {cluster.description}
-                      </Text>
+                <div className="mt-6 grid grid-cols-1 gap-5 border-t border-border pt-5 sm:grid-cols-3 sm:gap-4">
+                  {entry.clusters.map((cluster, index) => (
+                    <div key={cluster.label} ref={getColumnMotionRef(index)}>
+                      <div ref={getColumnRef(index)}>
+                        <p className="font-mono text-caption uppercase tracking-[0.15em] text-accent">
+                          {cluster.label}
+                        </p>
+                        <Text as="p" tone="secondary" size="body-sm" className="mt-2 leading-relaxed">
+                          {cluster.description}
+                        </Text>
+                      </div>
                     </div>
                   ))}
                 </div>

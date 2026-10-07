@@ -5,7 +5,7 @@ import { useAppStore } from "../store/useAppStore";
 
 /**
  * DOM half of the Hero entrance (spec §5: typography reveal timed with the
- * 3D lattice materializing). Returns a ref-callback factory to attach to
+ * ID card settling into place). Returns a ref-callback factory to attach to
  * each element in reveal order (`getItemRef(0)`, `getItemRef(1)`, ...) —
  * the ref array itself stays private to this hook, since
  * eslint-plugin-react-hooks' immutability rule (React Compiler-oriented)

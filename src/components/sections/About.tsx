@@ -1,4 +1,4 @@
-import { Container, Heading, Section, SectionLabel, Text } from "../ui";
+import { Container, Heading, Section, Text } from "../ui";
 import { useScrollReveal } from "../../animation/useScrollReveal";
 
 const ITEM_COUNT = 3;
@@ -22,9 +22,8 @@ export function About() {
     <Section id="about" aria-labelledby="about-heading">
       <Container ref={containerRef}>
         <div ref={getItemRef(0)}>
-          <SectionLabel index="01">About</SectionLabel>
-          <Heading id="about-heading" as="h2" size="display-lg" className="mt-6 max-w-2xl">
-            I build things from idea to deployment.
+          <Heading id="about-heading" as="h2" size="display-lg" className="section-heading max-w-2xl">
+            About
           </Heading>
         </div>
 
@@ -33,30 +32,26 @@ export function About() {
             {/* About stays short and is not a project list — the projects have
                 their own section. No numbers here on purpose. */}
             <Text as="p" tone="secondary" size="body-lg">
-              I&rsquo;m Vignesh, a pre-final-year Computer Science Engineering student interested in
-              networking, applied cryptography, and AI engineering. I like to understand something
-              properly and then build and test it myself. This site is named after lattice-based
-              cryptography, the area Kyber comes from and the one I&rsquo;m most into.
+              I&rsquo;m Vignesh, focused on networking, applied cryptography, and AI engineering.
+              I like to understand something properly and then build and test it myself.
             </Text>
             {/* NEEDS VIGNESH INPUT (no metric exists in the resume or any
                 repo, so none is stated): number of systems/features built or
                 improved at Earthy, teams/stakeholders worked with, recurring
                 issues resolved, a concrete example with users reached and
                 time/manual work saved (%), projects/features shipped over
-                what period. Present tense follows Vignesh's own repeated
-                statement that the role is ongoing (the 2026-09-10 resume
-                said Sep 2026; Experience now shows "Present"). */}
+                what period. */}
             <Text as="p" tone="secondary" size="body-lg">
-              Alongside college, I&rsquo;m working as a Founder&rsquo;s Associate (Growth Engineer)
-              at Earthy in Bengaluru. My role is hands-on: I&rsquo;ve worked on the company&rsquo;s
-              website, UI/UX workflows, internal tools, and technical infrastructure, and I work
+              Alongside college, I worked as a Founder&rsquo;s Associate (Growth Engineer)
+              at Earthy in Bengaluru. The role was hands-on: I worked on the company&rsquo;s
+              website, UI/UX workflows, internal tools, and technical infrastructure, and worked
               directly with the founders and with non-technical stakeholders to sort out issues
               across product and operations.
             </Text>
             <Text as="p" tone="secondary" size="body-lg">
-              A big part of it is taking problems that aren&rsquo;t necessarily technical at first
+              A big part of it was taking problems that weren&rsquo;t necessarily technical at first
               and turning them into something we can actually build and use. What I like about the
-              work is being involved in the whole process: understanding the problem, building the
+              work was being involved in the whole process: understanding the problem, building the
               solution, deploying it, seeing how people use it, and improving it.
             </Text>
           </div>

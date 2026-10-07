@@ -1,4 +1,7 @@
-import type { ProjectVariant } from "../scene/ProjectShowcase";
+import quantumSecureCommunication from "../assets/projects/quantum-secure-communication-logo.png";
+import ragKnowledgeAssistant from "../assets/projects/rag-logo.png";
+import projectStore from "../assets/projects/project-store-icon.png";
+import personalPortfolio from "../assets/projects/personal-portfolio-briefcase.png";
 
 export interface ProjectMetric {
   value: string;
@@ -24,6 +27,17 @@ export interface ProjectMetrics {
   items: ProjectMetric[];
 }
 
+export interface ProjectCaseStudy {
+  summary: string;
+  overview: string;
+  problem: string;
+  approach: string;
+  technology: string[];
+  contributions: string[];
+  flow: string[];
+  outcome: string;
+}
+
 export interface Project {
   number: string;
   name: string;
@@ -35,8 +49,6 @@ export interface Project {
   highlight?: { label: string; text: string };
   /** At most three tiles — the card has to scan in 10–15 seconds. */
   metrics?: ProjectMetrics;
-  /** Only stated when a source supports it. */
-  status?: string;
   /** Only real, verified URLs. */
   links?: { label: string; href: string }[];
   /**
@@ -50,22 +62,22 @@ export interface Project {
     metrics?: ProjectMetrics;
   };
   /**
-   * Drop-in slots for the final 3D project assets — leave undefined until
-   * they exist (nothing is fabricated).
-   *  - `logo`: a small mark shown above the project label (e.g. a rendered
-   *    3D logo with a transparent background).
-   *  - `visual`: replaces the procedural WebGL artifact in the left panel
-   *    with a static image/render. Without it the existing procedural 3D
-   *    artifact (`variant`) is shown.
-   * To use one: put the file in `src/assets/projects/`, import it at the top
-   * of this file, and set `{ src: importedUrl, alt: "…" }` on the project.
+   * Optional local artwork for the project card.
+   *  - `logo`: a compact mark shown above the project title.
+   *  - `visual`: primary project artwork, shown in the card's shared
+   *    aspect-ratio frame without cropping or distortion.
+   * Import assets from `src/assets/projects/` and set `{ src, alt }`.
    */
   logo?: ProjectAsset;
   visual?: ProjectAsset;
-  variant: ProjectVariant;
+  caseStudy: ProjectCaseStudy;
 }
 
 const NBSP = " ";
+const QUANTUM_SOURCE_URL = "https://github.com/vigneshrao1723-lab/Quantum-Resistant-Secure-Communication-System";
+const RAG_SOURCE_URL = "https://github.com/vigneshrao1723-lab/advanced-rag-knowledge-assistant";
+const PROJECT_STORE_SOURCE_URL = "https://github.com/vigneshrao1723-lab/Project-store";
+const PORTFOLIO_SOURCE_URL = "https://github.com/vigneshrao1723-lab/Vignesh_T_Personal_Portfolio_Website";
 
 // Evidence behind every number below is traced in CLAUDE.md. Summary:
 //  • Project A: the user's project audit. Independently reproduced on disk:
@@ -93,9 +105,9 @@ export const PROJECTS: Project[] = [
   {
     number: "01",
     name: "Quantum-Resistant Secure Communication System",
-    tags: ["Python", "RSA-2048", "ML-KEM-768 (Kyber)", "AES-256-GCM", "PostgreSQL"],
+    tags: ["Python", "RSA-2048 + ML-KEM-768", "AES-256-GCM", "PostgreSQL"],
     description:
-      "A secure messaging system for comparing RSA-2048 + AES-256-GCM with Kyber (ML-KEM-768) + AES-256-GCM, since RSA key exchange would not survive a large quantum computer. It runs on desktop, web and Android, and messages are encrypted on the client.",
+      "A secure messaging system comparing RSA-2048 and ML-KEM-768 key exchange, with client-side encryption across desktop, web and Android.",
     highlight: {
       label: "What I measured",
       text: `Session-key setup took 0.51${NBSP}ms with RSA and 8.16${NBSP}ms with ML-KEM-768. That gap reflects the implementations, not the algorithms: the RSA path uses native OpenSSL, the ML-KEM code is pure Python.`,
@@ -108,13 +120,16 @@ export const PROJECTS: Project[] = [
         { value: "1,840", label: "Collected tests" },
       ],
     },
-    status: "In development, not production-ready",
     links: [
       {
-        label: "View source on GitHub",
-        href: "https://github.com/vigneshrao1723-lab/Quantum-Resistant-Secure-Communication-System",
+        label: "View Source",
+        href: QUANTUM_SOURCE_URL,
       },
     ],
+    visual: {
+      src: quantumSecureCommunication,
+      alt: "Supplied logo for the quantum-resistant secure communication system",
+    },
     more: {
       paragraphs: [
         "RSA key exchange would be broken by a large enough quantum computer running Shor’s algorithm. ML-KEM (Kyber), standardized by NIST as FIPS 203, is the post-quantum replacement, so I put both behind the same messaging system to see how they behave side by side.",
@@ -128,14 +143,32 @@ export const PROJECTS: Project[] = [
         "1,840 is the number of tests collected by pytest, not a claim that they all pass.",
       ],
     },
-    variant: "crypto",
+    caseStudy: {
+      summary: "A comparative secure-messaging build for conventional and post-quantum key exchange.",
+      overview:
+        "A secure messaging system that puts RSA-2048 and ML-KEM-768 key exchange behind the same client experience across desktop, web, and Android.",
+      problem:
+        "Messaging systems need to protect session setup while making the trade-offs between established and post-quantum cryptography visible in a working implementation.",
+      approach:
+        "The project compares the two exchange paths, then protects messages with authenticated encryption. Peer verification, signatures, TLS, authentication, and persistent storage complete the messaging flow.",
+      technology: ["Python", "RSA-2048", "ML-KEM-768", "ML-DSA-65", "AES-256-GCM", "Argon2id", "PostgreSQL", "TLS", "JWT"],
+      contributions: [
+        "Built a shared messaging flow for RSA-2048 and ML-KEM-768 session-key exchange.",
+        "Added ML-DSA-65 signing, peer fingerprint verification, and AES-256-GCM message encryption.",
+        "Benchmarked key-generation and session-key setup paths with documented implementation caveats.",
+        "Tested the protocol surface with a 40-item acceptance matrix and 1,840 collected pytest tests.",
+      ],
+      flow: ["Desktop, web & Android clients", "TLS + JWT messaging service", "RSA-2048 or ML-KEM-768 session setup", "AES-256-GCM encrypted messages", "PostgreSQL storage"],
+      outcome:
+        "The build makes post-quantum integration concrete while keeping its measurements appropriately scoped to one development environment and implementation.",
+    },
   },
   {
     number: "02",
     name: "Advanced RAG Knowledge Assistant",
-    tags: ["Python", "FastAPI", "PostgreSQL", "pgvector", "Next.js"],
+    tags: ["FastAPI", "PostgreSQL / pgvector", "Next.js"],
     description:
-      "A RAG assistant that ingests documents, retrieves the passages that matter for a question, and answers with citations, so every answer can be traced back to its source.",
+      "A document assistant that retrieves relevant passages and answers questions with citations linking each response to its source.",
     highlight: {
       label: "What I measured",
       text: `On a 20-document test corpus, all 400 measured answers came back with citations, and retrieval took about 4${NBSP}ms at the median. These are local runs on a small corpus, not production traffic.`,
@@ -150,10 +183,14 @@ export const PROJECTS: Project[] = [
     },
     links: [
       {
-        label: "View source on GitHub",
-        href: "https://github.com/vigneshrao1723-lab/advanced-rag-knowledge-assistant",
+        label: "View Source",
+        href: RAG_SOURCE_URL,
       },
     ],
+    visual: {
+      src: ragKnowledgeAssistant,
+      alt: "Supplied logo for the advanced RAG knowledge assistant",
+    },
     more: {
       paragraphs: [
         "Documents go through extraction, cleaning and structure-aware chunking, and the 384-dimensional embeddings are stored in PostgreSQL with pgvector. A question runs dense and lexical retrieval, merges the results with reciprocal-rank fusion, reranks them, and generates a grounded answer with citations.",
@@ -165,19 +202,41 @@ export const PROJECTS: Project[] = [
         "In my benchmark run the backend reported 745 tests: 740 passed and 5 need espeak-ng installed. The frontend has 76 tests.",
       ],
     },
-    variant: "rag",
+    caseStudy: {
+      summary: "A citation-first document assistant that grounds answers in retrieved source passages.",
+      overview:
+        "A document assistant that ingests a small knowledge corpus, retrieves relevant passages, and returns answers with citations connected to their sources.",
+      problem:
+        "Question-answering over documents needs retrieval quality and traceability so users can inspect the source behind an answer rather than trust ungrounded output.",
+      approach:
+        "Documents are extracted, cleaned, and structure-aware chunked before 384-dimensional embeddings are stored in pgvector. A question combines dense and lexical retrieval with reciprocal-rank fusion, reranking, and cited answer generation.",
+      technology: ["FastAPI", "Next.js", "PostgreSQL", "pgvector", "Dense retrieval", "Lexical retrieval", "Reciprocal-rank fusion", "Reranking"],
+      contributions: [
+        "Built the extraction, cleaning, chunking, and embedding pipeline for document ingestion.",
+        "Stored vectors in PostgreSQL with pgvector and combined dense and lexical retrieval.",
+        "Added reranking and citations so answers remain connected to retrieved passages.",
+        "Included authentication, workspaces, observability, voice mode, and an evaluation harness.",
+      ],
+      flow: ["Documents", "Extract, clean & chunk", "Embeddings in PostgreSQL / pgvector", "Dense + lexical retrieval", "Rerank", "Cited answer"],
+      outcome:
+        "On the measured 20-document corpus, every one of 400 recorded answers included citations; the figures are local small-corpus results, not production traffic claims.",
+    },
   },
   {
     number: "03",
     name: "Project Store",
-    tags: ["REST APIs", "Database transactions", "Docker", "CI/CD"],
+    tags: ["REST APIs", "Transactions", "Docker", "CI/CD"],
     description:
-      "A small store I’m building for my own projects and work, to practice the whole flow from browsing to checkout. It isn’t finished, and it isn’t meant to be an enterprise platform.",
+      "A personal project store designed around browsing, a cart, and sandbox checkout.",
+    links: [{ label: "View Source", href: PROJECT_STORE_SOURCE_URL }],
     highlight: {
       label: "What it will do",
       text: "Browse projects by category, add them to a cart, and check out through a sandbox payment, with a simple admin view for managing items and orders.",
     },
-    status: "In progress, not finished",
+    visual: {
+      src: projectStore,
+      alt: "Supplied logo for Project Store",
+    },
     more: {
       items: [
         "User authentication, and a catalog of my own projects with category-based browsing and search.",
@@ -195,6 +254,55 @@ export const PROJECTS: Project[] = [
         ],
       },
     },
-    variant: "commerce",
+    caseStudy: {
+      summary: "A project store designed around a conventional commerce flow.",
+      overview:
+        "A personal project store designed around browsing a catalog, maintaining a cart, and completing a sandbox checkout.",
+      problem:
+        "The project explores a coherent project-discovery and order-management flow while keeping the scope explicit about what is planned rather than already delivered.",
+      approach:
+        "The planned system combines authenticated browsing and search with REST API resources, database transactions, inventory tracking, a cart, checkout, and an admin view.",
+      technology: ["REST APIs", "Database transactions", "Docker", "CI/CD", "Automated testing"],
+      contributions: [
+        "Defined a catalog with category browsing and search for personal projects.",
+        "Planned inventory, cart, sandbox checkout, and order-management flows.",
+        "Scoped an admin dashboard and REST APIs backed by database transactions.",
+        "Included Docker, CI/CD, and automated testing in the engineering plan.",
+      ],
+      flow: ["Visitor", "Project catalog & search", "Cart", "Sandbox checkout", "Orders & admin management"],
+      outcome:
+        "The flow and engineering scope are documented without claiming shipped or measured functionality.",
+    },
+  },
+  {
+    number: "04",
+    name: "Personal Portfolio",
+    tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "GSAP"],
+    description:
+      "A responsive engineering portfolio that combines interactive UI, technical storytelling, and recruiter-focused project presentation.",
+    links: [{ label: "View Source", href: PORTFOLIO_SOURCE_URL }],
+    visual: {
+      src: personalPortfolio,
+      alt: "Briefcase icon for the personal portfolio",
+    },
+    caseStudy: {
+      summary: "A responsive portfolio designed to present engineering work with focused interaction and clear technical context.",
+      overview:
+        "This site is a React and TypeScript portfolio built with reusable sections, responsive navigation, project content, and a compact visual system for presenting experience and work.",
+      problem:
+        "A portfolio has to make technical work scannable for recruiters while still giving reviewers a way to inspect implementation context without turning project cards into long documents.",
+      approach:
+        "The interface separates content data, UI primitives, section components, and animation hooks. A hanging digital ID card provides direct manipulation, while scroll-triggered motion and responsive layouts reinforce reading order.",
+      technology: ["React", "TypeScript", "Vite", "Tailwind CSS", "GSAP", "Zustand", "Lenis"],
+      contributions: [
+        "Built reusable section, heading, button, link, and container primitives.",
+        "Implemented a keyboard- and touch-accessible hanging ID card with pointer drag and spring-back motion.",
+        "Added scroll-triggered reveals, smooth section navigation, and responsive navigation behavior.",
+        "Structured project content as data and included CV download and contact workflows.",
+      ],
+      flow: ["Visitor", "Responsive React portfolio UI", "Section navigation & content", "Interactive ID card + scroll motion", "Projects, CV download & contact"],
+      outcome:
+        "The result is a focused, responsive portfolio that keeps primary information easy to scan while allowing deeper technical project context on demand.",
+    },
   },
 ];

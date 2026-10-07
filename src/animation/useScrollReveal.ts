@@ -30,27 +30,34 @@ export function useScrollReveal<T extends HTMLElement>(itemCount: number) {
     if (items.length === 0) return;
 
     if (reducedMotion) {
-      gsap.set(items, { opacity: 1, y: 0 });
+      gsap.set(items, { autoAlpha: 1, y: 0 });
       return;
     }
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: gsapEase.signal,
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 75%",
-            once: true,
-          },
+      const [heading, ...content] = items;
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 75%",
+          once: true,
         },
+      });
+
+      timeline.fromTo(
+        heading,
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.7, ease: gsapEase.signal },
       );
+
+      if (content.length > 0) {
+        timeline.fromTo(
+          content,
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.65, ease: gsapEase.signal, stagger: 0.1 },
+          "-=0.34",
+        );
+      }
     });
 
     // gsap.context tracks every tween/ScrollTrigger created inside its

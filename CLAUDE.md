@@ -37,6 +37,25 @@ The 3D must serve the story and content rather than exist purely as decoration.
 
 # CURRENT STATE
 
+## Digital ID card hero (2026-10-05)
+
+The former head/portrait implementation has been removed from the hero and
+replaced with `src/components/ui/DigitalIdCard.tsx`, a responsive two-sided
+portfolio identity card. `Hero.tsx` now renders the card as its primary visual;
+the card front carries the photo, identity, title, statement, and location, and
+the back carries verified skills plus Email, GitHub, LinkedIn, project-navigation,
+and CV-request actions. It has restrained pointer tilt only on fine-hover devices,
+tap/click and keyboard-operable flip controls, visible focus states, and inherits
+the global reduced-motion behavior. `src/content/profile.ts` now centralizes the
+confirmed profile/contact data used by the card.
+
+Removed files: `PortraitSlot.tsx`, `CursorPortrait.tsx`, `HeadScene.tsx`, and
+`cursorOffset.ts`; the project-section 3D scenes remain in place. No CV/resume
+asset exists in this repository, so the honest `Request CV` action composes an
+email instead of linking to a nonexistent file. Verification completed:
+`npm.cmd run typecheck`, `npm.cmd run lint`, and `npm.cmd run build` all pass;
+the source scan finds no remaining imports or references to the removed hero path.
+
 Current project:
 LATTICE
 

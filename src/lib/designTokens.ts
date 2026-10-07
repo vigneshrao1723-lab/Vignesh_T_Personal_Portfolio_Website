@@ -1,7 +1,7 @@
 /**
  * Typed access to the design tokens defined in `src/styles/tokens.css`.
  *
- * This is the bridge described in LATTICE Master Specification §9: Tailwind
+ * This is the shared design-token bridge: Tailwind
  * classes can't drive Three.js materials, so anything that needs a design
  * token outside CSS (a material color, a GSAP duration) reads it from here
  * instead of hand-copying a literal value. tokens.css remains the only place

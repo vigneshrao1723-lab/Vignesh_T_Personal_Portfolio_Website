@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { Button, Container, Heading, Section, SectionLabel, Text } from "../ui";
+import { Button, Container, Heading, Section, Text } from "../ui";
 import { useScrollReveal } from "../../animation/useScrollReveal";
 
 const EMAIL = "vigneshrao1723@gmail.com";
@@ -63,13 +63,13 @@ function ContactForm() {
     <form
       onSubmit={handleSubmit}
       aria-labelledby="contact-form-heading"
-      className="rounded-card border border-border bg-surface p-6 shadow-card md:p-8"
+      className="w-full max-w-2xl rounded-card border border-border bg-surface p-6 shadow-card md:p-8"
     >
       <h3 id="contact-form-heading" className="font-display text-heading-md font-medium text-ink">
         Send a message
       </h3>
 
-      <div className="mt-6 space-y-5">
+      <div className="mt-6 space-y-6">
         <div>
           <label htmlFor="contact-name" className={labelClass}>
             Name
@@ -85,7 +85,7 @@ function ContactForm() {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
             <label htmlFor="contact-email" className={labelClass}>
               Email
@@ -123,9 +123,9 @@ function ContactForm() {
             id="contact-message"
             name="message"
             required
-            rows={5}
+            rows={6}
             maxLength={MESSAGE_LIMIT}
-            className={`${fieldClass} resize-y`}
+            className={`${fieldClass} min-h-36 resize-y`}
           />
         </div>
       </div>
@@ -137,8 +137,7 @@ function ContactForm() {
       </div>
 
       <p className="mt-4 text-caption text-ink-muted">
-        This opens your email app with the message filled in. Nothing is sent until you
-        press send there.
+        Submitting opens your email app with the message prepared. It is only sent when you send it from there.
       </p>
       {opened && (
         <p role="status" className="mt-3 text-body-sm text-ink-secondary">
@@ -165,13 +164,12 @@ export function Contact() {
     <Section id="contact" aria-labelledby="contact-heading">
       <Container ref={containerRef}>
         <div ref={getItemRef(0)}>
-          <SectionLabel index="06">Contact</SectionLabel>
-          <Heading id="contact-heading" as="h2" size="display-lg" className="mt-6 max-w-3xl">
-            Contact me.
+          <Heading id="contact-heading" as="h2" size="display-lg" className="section-heading max-w-3xl">
+            Contact
           </Heading>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.2fr] md:items-start">
+        <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,.85fr)_minmax(0,1.15fr)] md:items-start">
           <div ref={getItemRef(1)}>
             <Text as="p" tone="secondary" size="body-lg" className="max-w-md">
               If you&rsquo;d like to talk about a project, a collaboration, technical
@@ -207,7 +205,7 @@ export function Contact() {
             </div>
           </div>
 
-          <div ref={getItemRef(2)}>
+          <div ref={getItemRef(2)} className="w-full md:justify-self-end">
             <ContactForm />
           </div>
         </div>
