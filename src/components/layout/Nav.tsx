@@ -142,7 +142,7 @@ export function Nav() {
     setThemeNotice(
       saved
         ? `${nextTheme === "dark" ? "Dark" : "Light"} appearance selected.`
-        : `Appearance changed for this visit; browser storage is unavailable.`,
+        : "Appearance changed for this visit; browser storage is unavailable.",
     );
   };
 

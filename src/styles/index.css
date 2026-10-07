@@ -111,7 +111,7 @@ main {
   justify-content: center;
   padding: 1rem;
   overflow: hidden;
-  background: rgb(20 23 26 / 0.34);
+  background: var(--color-backdrop);
   animation: project-dialog-backdrop-in 180ms ease-out both;
 }
 
